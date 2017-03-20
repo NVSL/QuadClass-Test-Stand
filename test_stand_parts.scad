@@ -3,7 +3,7 @@ screw_shaft_length=16;
 bolt_diameter=5;
 bolt_thickness=1.6;
 mortice_hole_distance=10;
-mortice_width=10;
+mortice_width=15;
 material_thickness=2.55; // plywood
 // plexiglass material_thickness=4.1;
 
@@ -41,10 +41,11 @@ module side(width, height, extension, extension_height) {
             polygon([[-width/2,0],[width/2,0],[0,height]]);
             translate([0,extension_height/2]) square(size=[width+2*extension, extension_height], center=true);  
         }  
-        //secured_mortice(0,10, 0);
-        secured_mortice(-20,35, 60);
-        secured_mortice(20,35, -60);
-        //secured_mortice(0,50, 90);
+        //secured_mortice(-20,35, 60);
+        //secured_mortice(20,35, -60);
+
+        secured_mortice(0,50, 90);
+        secured_mortice(0,10, 0);
         
         translate([0, 80]) {
             union() {
@@ -64,7 +65,7 @@ module tenon() {
 module tenon_attach() {
     
     union() {
-        translate([0,-(screw_shaft_length-material_thickness)/2]) square([screw_hole_diameter, screw_shaft_length-material_thickness], center=true);
+        translate([0,-(screw_shaft_length-material_thickness)/2]) square([screw_hole_diameter, screw_shaft_length-material_thickness + 1], center=true);
         translate([0,-(screw_shaft_length-material_thickness)/2]) square([bolt_diameter, bolt_thickness], center=true);
     }
     
@@ -149,20 +150,55 @@ module adafruit_quarter_perm_proto() {
     
     
 }
+
+module zip_tie_hole() {
+    zip_tie_width = inch_to_mm(0.09);
+    zip_tie_thickness = inch_to_mm(0.04);
+    square([zip_tie_thickness, zip_tie_width], center=true);
+}
+
+module motor_grip(mount_outer_diameter = 16,
+    mount_inner_diameter = 8.5,
+    mount_cut_width = 4,
+    arm_length = 55/2 + 10,
+    arm_width = 10) {
+    
+    translate([-arm_length/2, 0]) square([arm_length,arm_width], center=true);
+    translate([-(arm_length+mount_inner_diameter/2),0]) difference() {
+        smooth_hole(diameter=mount_outer_diameter);
+        smooth_hole(diameter=mount_inner_diameter);
+        translate([-mount_outer_diameter/2,0]) square([mount_outer_diameter,mount_cut_width], center=true);
+    }
+
+}
+
 module platform_2() {
+    width = 44;
+    height = 55;
+    
+    
     difference() {
         union() {
             //square([80,24],center=true);
-            square([44,55], center=true);
+            square([width,height], center=true);
             translate([15,0]) square([10,65],center=true);
             translate([-15,0]) square([10,65],center=true);
-            translate([0,0]) square([80,10],center=true);
+            translate([-20,0]) motor_grip();
+            translate([20,0]) rotate(a=180) motor_grip();
         }
         //translate([21,-6]) MotorDriver_rev1();
         //translate([-21,6]) rotate(a=180) MotorDriver_rev1();
         adafruit_quarter_perm_proto();
-        translate([-35,0]) prop_mount_holes();
-        translate([35,0]) prop_mount_holes();
+        //translate([-33,0]) prop_mount_holes();
+        //translate([33,0]) prop_mount_holes();
+        
+        zip_tie_space = 1.5;
+        translate([-zip_tie_space, height/2-3]) zip_tie_hole();
+        translate([zip_tie_space, height/2-3]) zip_tie_hole();
+        translate([-zip_tie_space, -(height/2-3)]) zip_tie_hole();
+        translate([zip_tie_space, -(height/2-3)]) zip_tie_hole();
+        
+        //square([inch_to_mm(1/16),60], center=true);
     }
 }
 
@@ -175,24 +211,14 @@ module prop_mount_holes() {
 }
 
 
+
 module prop_mount() {
-    arm_length = 33;
-    arm_width = 4;
     base_width = 5;
     base_length = 12;    
     
-    mount_outer_diameter = 7;
-    mount_inner_diameter = 4.18;
-    mount_cut_width = 3;
     difference() {
         union() {
-
-            translate([-arm_length/2, 0]) square([arm_length,arm_width], center=true);
-            translate([-(arm_length+mount_inner_diameter/2),0]) difference() {
-                smooth_hole(diameter=mount_outer_diameter);
-                smooth_hole(diameter=mount_inner_diameter);
-                translate([-mount_outer_diameter/2,0]) square([mount_outer_diameter,mount_cut_width], center=true);
-            }
+            motor_grip();
             translate([-base_length/2,0]) square([base_length,base_width], center=true);
         }
         translate([-base_length/2,0]) prop_mount_holes();
@@ -203,4 +229,4 @@ module prop_mount() {
 //adafruit_quarter_perm_proto();
 
 //platform_2();
-side(side_length, side_height, 40, 4);
+//side(side_length, side_height, 40, 4);
