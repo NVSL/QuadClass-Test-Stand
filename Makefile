@@ -1,5 +1,5 @@
 
-PARTS=test_stand_brace.scad test_stand_side.scad test_piece.scad two_sides.scad three_braces.scad
+PARTS=test_stand_brace.scad test_stand_side.scad test_piece.scad two_sides.scad three_braces.scad full_kit.scad
 SVGS=$(PARTS:%.scad=%.svg)
 PDFS=$(PARTS:%.scad=%.pdf)
 DXFS=$(PARTS:%.scad=%.dxf)
