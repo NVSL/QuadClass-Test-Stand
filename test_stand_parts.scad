@@ -8,7 +8,7 @@ mortice_hole_distance=10;
 mortice_width=10;
 shaft_diameter = inch_to_mm(1/16);
 // plywood
-material_thickness=2.55; 
+material_thickness=3.25;//2.55; 
 screw_hole_diameter = 2.5 - 0.3;
 shaft_diameter = inch_to_mm(1/16)- 0.2;
 
@@ -70,6 +70,11 @@ module side(width, height, extension, extension_height, horizontal_brace_width=b
             }   
         }
         
+        translate([0,-25]) difference() {
+            polygon([[-width/2,0],[width/2,0],[0,height]]);
+            translate([0, height/2 + 30 + 25]) square([height, height], center=true);
+        }
+        
     } 
 }
 
@@ -81,7 +86,7 @@ module tenon_attach() {
     
     union() {
         translate([0,-(screw_shaft_length-material_thickness)/2]) square([screw_hole_diameter, screw_shaft_length-material_thickness + 1], center=true);
-        translate([0,-(screw_shaft_length-material_thickness)/2]) square([bolt_diameter, bolt_thickness], center=true);
+        translate([0,-(screw_shaft_length-material_thickness)*(7/8)]) square([bolt_diameter, bolt_thickness], center=true);
     }
     
 }
@@ -209,7 +214,7 @@ module motor_grip(mount_outer_diameter = 16,
 }
 
 module platform_2() {
-    width = 42;
+    width = 40;
     height = 55;
     
     difference() {
@@ -218,11 +223,30 @@ module platform_2() {
             square([width,height], center=true);
             translate([7.5,0]) square([5,65],center=true);
             translate([-7.5,0]) square([5,65],center=true);
+
+            x = 20;
+            l = 35;
+            w = 10;
+            
+            translate([-x, 0] ) translate([w/2-5,0]) square([w,105],center=true);
+            translate([+x, 0] ) translate([-w/2+5,0]) square([w,105],center=true);
+
+            //translate([-x, x] ) translate([w/2-5,l/2]) square([w,l],center=true);
+            //translate([x, -x] ) translate([-w/2+5,-l/2]) square([w,l],center=true);
+            //translate([-x, -x]) translate([w/2-5,-l/2]) square([w,l],center=true);
+            //translate([x, x]  ) translate([-w/2+5,l/2]) square([w,l],center=true);
                
-            rotate(a=45) motor_grip(slot_depth=5, arm_length=63);//, arm_length=55/2+27);
-            rotate(a=45+90) motor_grip(slot_depth=5, arm_length=63);//, arm_length=55/2+27);
-            rotate(a=45+180) motor_grip(slot_depth=5, arm_length=63);//, arm_length=55/2+27);
-            rotate(a=45+270) motor_grip(slot_depth=5, arm_length=63);//, arm_length=55/2+27);
+            //rotate(a=45) motor_grip(slot_depth=5, arm_length=63);//, arm_length=55/2+27);
+            //rotate(a=45+90) motor_grip(slot_depth=5, arm_length=63);//, arm_length=55/2+27);
+            //rotate(a=45+180) motor_grip(slot_depth=5, arm_length=63);//, arm_length=55/2+27);
+            //rotate(a=45+270) motor_grip(slot_depth=5, arm_length=63);//, arm_length=55/2+27);
+
+            translate([-x,-47.5]) rotate(a=0)   motor_grip(slot_depth=5, arm_length=23);//, arm_length=55/2+27);
+            translate([x, -47.5]) rotate(a=180) motor_grip(slot_depth=5, arm_length=23);//, arm_length=55/2+27);
+            translate([-x, 47.5]) rotate(a=0)   motor_grip(slot_depth=5, arm_length=23);//, arm_length=55/2+27);
+            translate([x,  47.5]) rotate(a=180) motor_grip(slot_depth=5, arm_length=23);//, arm_length=55/2+27);
+//            rotate(a=45+180) motor_grip(slot_depth=5, arm_length=63);//, arm_length=55/2+27);
+//            rotate(a=45+270) motor_grip(slot_depth=5, arm_length=63);//, arm_length=55/2+27);
         }
         
         rotate(a=90) adafruit_quarter_perm_proto();
@@ -234,14 +258,14 @@ module platform_2() {
         
     }
     
-    translate([0,45]) rotate(a=90) union() {
+    /*translate([-45,0]) rotate(a=0) union() {
         difference() {
             square([10,height], center=true);
             rotate(a=90) adafruit_quarter_perm_proto(hole_diameter=5.5);
             translate([0, height/2-5]) zip_tie_holes();
             translate([0, -(height/2-5)]) zip_tie_holes();
         }   
-    }
+    }*/
 }
 
 module prop_mount_holes() {
@@ -270,5 +294,5 @@ module prop_mount() {
 //prop_mount_holes();
 //adafruit_quarter_perm_proto();
 
-platform_2();
+//platform_2();
 //side(side_length, side_height, 25, 4, horizontal_brace_width=brace_width+15, horizontal_mortice_width=20, vertical_brace_width=brace_width/2, vertical_mortice_width=5);
