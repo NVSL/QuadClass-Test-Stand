@@ -174,8 +174,8 @@ module platform() {
 module adafruit_quarter_perm_proto(hole_diameter=3.2) {
     union() {
         //square([44,55], center=true);
-        translate([-inch_to_mm(1.25/2),0]) smooth_hole(diameter=hole_diameter);
-        translate([inch_to_mm(1.25/2),0]) smooth_hole(diameter=hole_diameter);
+        translate([-35.5/2,0]) smooth_hole(diameter=hole_diameter);
+        translate([35.5/2,0]) smooth_hole(diameter=hole_diameter);
     }
     
     
@@ -214,7 +214,7 @@ module motor_grip(mount_outer_diameter = 16,
 }
 
 module platform_2() {
-    width = 40;
+    width = 53;
     height = 55;
     
     difference() {
@@ -228,8 +228,8 @@ module platform_2() {
             l = 35;
             w = 10;
             
-            translate([-x, 0] ) translate([w/2-5,0]) square([w,105],center=true);
-            translate([+x, 0] ) translate([-w/2+5,0]) square([w,105],center=true);
+            translate([-x, 0] ) translate([w/2-7,0]) square([w,105],center=true);
+            translate([+x, 0] ) translate([-w/2+7,0]) square([w,105],center=true);
 
             //translate([-x, x] ) translate([w/2-5,l/2]) square([w,l],center=true);
             //translate([x, -x] ) translate([-w/2+5,-l/2]) square([w,l],center=true);
@@ -250,11 +250,11 @@ module platform_2() {
         }
         
         rotate(a=90) adafruit_quarter_perm_proto();
-        translate([-(5+5), 0]) square([10,35], center=true);
-        translate([(5+5), 0]) square([10,35], center=true);
+        translate([-(5+5), 0]) square([12,39], center=true);
+        translate([ (5+5), 0]) square([12,39], center=true);
         
-        translate([0, height/2-5]) zip_tie_holes();
-        translate([0, -(height/2-5)]) zip_tie_holes();
+        translate([0, height/2-3]) zip_tie_holes();
+        translate([0, -(height/2-3)]) zip_tie_holes();
         
     }
     
@@ -294,5 +294,5 @@ module prop_mount() {
 //prop_mount_holes();
 //adafruit_quarter_perm_proto();
 
-//platform_2();
+platform_2();
 //side(side_length, side_height, 25, 4, horizontal_brace_width=brace_width+15, horizontal_mortice_width=20, vertical_brace_width=brace_width/2, vertical_mortice_width=5);
