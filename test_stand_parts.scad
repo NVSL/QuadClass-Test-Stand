@@ -226,10 +226,10 @@ module platform_2() {
 
             x = 20;
             l = 35;
-            w = 10;
+            w = 7;
             
-            translate([-x, 0] ) translate([w/2-7,0]) square([w,105],center=true);
-            translate([+x, 0] ) translate([-w/2+7,0]) square([w,105],center=true);
+            translate([-x, 0] ) translate([w/2-7,0]) square([w,102],center=true);
+            translate([+x, 0] ) translate([-w/2+7,0]) square([w,102],center=true);
 
             //translate([-x, x] ) translate([w/2-5,l/2]) square([w,l],center=true);
             //translate([x, -x] ) translate([-w/2+5,-l/2]) square([w,l],center=true);
@@ -241,18 +241,19 @@ module platform_2() {
             //rotate(a=45+180) motor_grip(slot_depth=5, arm_length=63);//, arm_length=55/2+27);
             //rotate(a=45+270) motor_grip(slot_depth=5, arm_length=63);//, arm_length=55/2+27);
 
-            translate([-x,-47.5]) rotate(a=0)   motor_grip(slot_depth=5, arm_length=23);//, arm_length=55/2+27);
-            translate([x, -47.5]) rotate(a=180) motor_grip(slot_depth=5, arm_length=23);//, arm_length=55/2+27);
-            translate([-x, 47.5]) rotate(a=0)   motor_grip(slot_depth=5, arm_length=23);//, arm_length=55/2+27);
-            translate([x,  47.5]) rotate(a=180) motor_grip(slot_depth=5, arm_length=23);//, arm_length=55/2+27);
+            translate([-x,-47.5]) rotate(a=0)   motor_grip(slot_depth=3, arm_length=23, arm_width=7);//, arm_length=55/2+27);
+            translate([x, -47.5]) rotate(a=180) motor_grip(slot_depth=3, arm_length=23, arm_width=7);//, arm_length=55/2+27);
+            translate([-x, 47.5]) rotate(a=0)   motor_grip(slot_depth=3, arm_length=23, arm_width=7);//, arm_length=55/2+27);
+            translate([x,  47.5]) rotate(a=180) motor_grip(slot_depth=3, arm_length=23, arm_width=7);//, arm_length=55/2+27);
 //            rotate(a=45+180) motor_grip(slot_depth=5, arm_length=63);//, arm_length=55/2+27);
 //            rotate(a=45+270) motor_grip(slot_depth=5, arm_length=63);//, arm_length=55/2+27);
         }
         
         rotate(a=90) adafruit_quarter_perm_proto();
-        translate([-(5+5), 0]) square([12,39], center=true);
-        translate([ (5+5), 0]) square([12,39], center=true);
-        
+        w=16;
+        //translate([-(5+w/2), 0]) square([w,39], center=true);
+        //translate([ (5+w/2), 0]) square([w,39], center=true);
+        square([42, 39], center=true);
         translate([0, height/2-3]) zip_tie_holes();
         translate([0, -(height/2-3)]) zip_tie_holes();
         
