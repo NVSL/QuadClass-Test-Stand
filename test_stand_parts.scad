@@ -59,35 +59,44 @@ module servo(servo_width, servo_height)
 			translate([-(mount_offset), 0]) smooth_hole(mount_diameter);
 }
 
-module side(width, height, extension, extension_height, horizontal_brace_width=brace_width, horizontal_mortice_width=mortice_width, vertical_brace_width=brace_width, vertical_mortice_width=mortice_width) {
+module side(width, extension, extension_height, horizontal_brace_width=brace_width, horizontal_mortice_width=mortice_width, vertical_brace_width=brace_width, vertical_mortice_width=mortice_width) {
 	pivot_diameter=inch_to_mm(1/16);
-
+    thick_pivot_diameter=inch_to_mm(1/8);
+    
+    height = width/2*sqrt(3);
+    
 	difference() {
 		union() {
 			polygon([[-width/2,0],[width/2,0],[0,height]]);
-			translate([0,extension_height/2]) square(size=[width+2*extension, extension_height], center=true);  
+			//translate([0,extension_height/2]) square(size=[width+2*extension, extension_height], center=true);  
 		}  
 		h_hole_distance = mortice_hole_distance(horizontal_brace_width, horizontal_mortice_width);
 		v_hole_distance = mortice_hole_distance(vertical_brace_width,vertical_mortice_width);
         
 		//secured_mortice(0,10, 0);
-		secured_mortice(53,14, -60, mortice_width=vertical_mortice_width, mortice_hole_distance=v_hole_distance);
-		secured_mortice(-53,14, 60, mortice_width=vertical_mortice_width, mortice_hole_distance=v_hole_distance);
+		secured_mortice(width/2-13, 14, -60, mortice_width=vertical_mortice_width, mortice_hole_distance=v_hole_distance);
+		secured_mortice(-(width/2-13),14, 60, mortice_width=vertical_mortice_width, mortice_hole_distance=v_hole_distance);
 		secured_mortice(0,5, 0, mortice_width=horizontal_mortice_width, mortice_hole_distance=h_hole_distance);
 		//secured   _mortice(0,50, 90);
         
-		column_width = 20;
+		column_width = 32;
 		pedestal_height = 25;
  
-		translate([0, 95]) {
+		translate([0, height-17]) {
 			union() {
 				translate([0, 20]) square([20,20], center=true);
+
 				translate([0, 20]) square([pivot_diameter, 40], center=true);
 				smooth_hole(pivot_diameter);
+
+
+				translate([0, 25]) square([thick_pivot_diameter, 40], center=true);
+                translate([0, 5]) smooth_hole(thick_pivot_diameter);
+
 				translate([-5, pivot_diameter/2+(material_thickness+0.5)/2]) translate([-(mortice_width+0.5)/2,0]) square([mortice_width+0.5, material_thickness+0.5], center=true);
 				translate([ 5, pivot_diameter/2+(material_thickness+0.5)/2]) translate([ (mortice_width+0.5)/2,0]) square([mortice_width+0.5, material_thickness+0.5], center=true);
                 
-				notch_depth = 3;
+				notch_depth = 5;
 				notch_width = 1.5;
 				for(i=[-5:-5:-30]) {
 					translate([column_width/2-notch_depth/2, i]) square([notch_depth, notch_width],center=true);
@@ -97,8 +106,8 @@ module side(width, height, extension, extension_height, horizontal_brace_width=b
 		}
         
  
-		translate([100/2+column_width/2,100/2+ pedestal_height]) square([100,100],  center=true);
-		translate([-(100/2 + column_width/2),100/2 + pedestal_height]) square([100,100],  center=true);
+		translate([200/2+column_width/2,200/2+ pedestal_height]) square([200,200],  center=true);
+		translate([-(200/2 + column_width/2),200/2 + pedestal_height]) square([200,200],  center=true);
 
 		//https://cdn.solarbotics.com/products/schematics/25500-dim-imp.pdf
 		servo_width = inch_to_mm(0.89);
@@ -320,3 +329,4 @@ module prop_mount() {
 
 //platform_2();
 //side(side_length, side_height, 25, 4, horizontal_brace_width=brace_width, horizontal_mortice_width=20, vertical_brace_width=28, vertical_mortice_width=5);
+//side(200,  25, 4, horizontal_brace_width=brace_width, horizontal_mortice_width=20, vertical_brace_width=28, vertical_mortice_width=5);
