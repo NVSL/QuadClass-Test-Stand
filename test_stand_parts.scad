@@ -59,9 +59,13 @@ module servo(servo_width, servo_height)
 			translate([-(mount_offset), 0]) smooth_hole(mount_diameter);
 }
 
-module side(width, extension, extension_height, horizontal_brace_width=brace_width, horizontal_mortice_width=mortice_width, vertical_brace_width=brace_width, vertical_mortice_width=mortice_width) {
-	pivot_diameter=inch_to_mm(1/16);
-    thick_pivot_diameter=inch_to_mm(1/8);
+module side(width, extension, extension_height, horizontal_brace_width=brace_width, horizontal_mortice_width=mortice_width, vertical_brace_width=brace_width, vertical_mortice_width=mortice_width, bearing_mount=false, docking_slots=true) {
+//    thick_pivot_diameter=inch_to_mm(1/8);
+    bearing_hole_diameter = inch_to_mm(1/4) - 0.1;
+    pivot_hole_diameter = inch_to_mm(1/16);
+    pivot_diameter = 0;
+    pivot_diameter = (bearing_mount ? inch_to_mm(1/8) : inch_to_mm(1/16));
+    pivot_hole_diameter = (bearing_mount ? inch_to_mm(1/4) - 0.1 : inch_to_mm(1/16));
     
     height = width/2*sqrt(3);
     
@@ -86,15 +90,15 @@ module side(width, extension, extension_height, horizontal_brace_width=brace_wid
 			union() {
 				translate([0, 20]) square([20,20], center=true);
 
-				translate([0, 20]) square([pivot_diameter, 40], center=true);
-				smooth_hole(pivot_diameter);
+                //translate([0, 18]) square([pivot_diameter, 40], center=true);
+                smooth_hole(pivot_hole_diameter);
+				//translate([0, 25]) square([thick_pivot_diameter, 40], center=true);
+                //translate([0, 5]) smooth_hole(thick_pivot_diameter);
 
-
-				translate([0, 25]) square([thick_pivot_diameter, 40], center=true);
-                translate([0, 5]) smooth_hole(thick_pivot_diameter);
-
-				translate([-5, pivot_diameter/2+(material_thickness+0.5)/2]) translate([-(mortice_width+0.5)/2,0]) square([mortice_width+0.5, material_thickness+0.5], center=true);
-				translate([ 5, pivot_diameter/2+(material_thickness+0.5)/2]) translate([ (mortice_width+0.5)/2,0]) square([mortice_width+0.5, material_thickness+0.5], center=true);
+				if (docking_slots) {
+                    translate([-5, pivot_diameter/2+(material_thickness+0.5)/2]) translate([-(mortice_width+0.5)/2,0]) square([mortice_width+0.5, material_thickness+0.5], center=true);
+                    translate([ 5, pivot_diameter/2+(material_thickness+0.5)/2]) translate([ (mortice_width+0.5)/2,0]) square([mortice_width+0.5, material_thickness+0.5], center=true);
+                }
                 
 				notch_depth = 5;
 				notch_width = 1.5;
@@ -323,10 +327,32 @@ module prop_mount() {
 		translate([-base_length/2,0]) prop_mount_holes();
 	}
 }
+
+module configured_side(length) {
+        side(length, 20, 4, horizontal_brace_width=brace_width, horizontal_mortice_width=20,     
+        vertical_brace_width=28, vertical_mortice_width=5);
+}
+
+module configured_main_brace(width) {
+   brace(width,brace_width, mortice_width=20);
+}
+
+module configured_side_brace(width) {
+    brace(width,28, mortice_width=5);
+}
+
+module side_pair(length) {
+    translate([-31,34]) configured_side(length);
+    translate([3,4+length/2*sqrt(3)+1 + 64]) rotate(a=180) configured_side(length);
+}
+
 //prop_mount();
 //prop_mount_holes();
 //adafruit_quarter_perm_proto();
 
 //platform_2();
 //side(side_length, side_height, 25, 4, horizontal_brace_width=brace_width, horizontal_mortice_width=20, vertical_brace_width=28, vertical_mortice_width=5);
-//side(200,  25, 4, horizontal_brace_width=brace_width, horizontal_mortice_width=20, vertical_brace_width=28, vertical_mortice_width=5);
+//side(side_length,  25, 4, horizontal_brace_width=brace_width, horizontal_mortice_width=20, vertical_brace_width=28, vertical_mortice_width=5);
+//side(200,  25, 4, horizontal_brace_width=brace_width, horizontal_mortice_width=20, vertical_brace_width=28, vertical_mortice_width=5, bearing_mount = true, docking_slots=false);
+
+    
