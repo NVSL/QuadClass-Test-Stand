@@ -59,7 +59,7 @@ module servo(servo_width, servo_height)
 			translate([-(mount_offset), 0]) smooth_hole(mount_diameter);
 }
 
-module side(width, extension, extension_height, horizontal_brace_width=brace_width, horizontal_mortice_width=mortice_width, vertical_brace_width=brace_width, vertical_mortice_width=mortice_width, bearing_mount=false, docking_slots=true) {
+module side(width, extension, extension_height, horizontal_brace_width=brace_width, horizontal_mortice_width=mortice_width, vertical_brace_width=brace_width, vertical_mortice_width=mortice_width, bearing_mount=false, docking_slots=true, servo_mounts=true) {
 //    thick_pivot_diameter=inch_to_mm(1/8);
     bearing_hole_diameter = inch_to_mm(1/4) - 0.1;
     pivot_hole_diameter = inch_to_mm(1/16);
@@ -113,11 +113,13 @@ module side(width, extension, extension_height, horizontal_brace_width=brace_wid
 		translate([200/2+column_width/2,200/2+ pedestal_height]) square([200,200],  center=true);
 		translate([-(200/2 + column_width/2),200/2 + pedestal_height]) square([200,200],  center=true);
 
-		//https://cdn.solarbotics.com/products/schematics/25500-dim-imp.pdf
-		servo_width = inch_to_mm(0.89);
-		servo_height = inch_to_mm(0.472);
-		translate([servo_width/2 + column_width/2 + 3, pedestal_height-servo_height/2 + 2]) servo(servo_width, servo_height);
-		translate([-(servo_width/2 + column_width/2 + 3), pedestal_height-servo_height/2 + 2]) servo(servo_width, servo_height);
+        if (servo_mounts) {
+            //https://cdn.solarbotics.com/products/schematics/25500-dim-imp.pdf
+            servo_width = inch_to_mm(0.89);
+            servo_height = inch_to_mm(0.472);
+            translate([servo_width/2 + column_width/2 + 3, pedestal_height-servo_height/2 + 2]) servo(servo_width, servo_height);
+            translate([-(servo_width/2 + column_width/2 + 3), pedestal_height-servo_height/2 + 2]) servo(servo_width, servo_height);
+        }
         
 		translate([60,82]) rotate(a=180) atmega128rfa_breakout();
 		translate([-60,82]) rotate(a=180) scale([-1,1]) atmega128rfa_breakout();
@@ -328,9 +330,9 @@ module prop_mount() {
 	}
 }
 
-module configured_side(length) {
+module configured_side(length, bearing_mount=false, docking_slots=true, servo_mounts=true) {
         side(length, 20, 4, horizontal_brace_width=brace_width, horizontal_mortice_width=20,     
-        vertical_brace_width=28, vertical_mortice_width=5);
+        vertical_brace_width=28, vertical_mortice_width=5, bearing_mount=bearing_mount, docking_slots=docking_slots, servo_mounts=servo_mounts);
 }
 
 module configured_main_brace(width) {
@@ -341,9 +343,9 @@ module configured_side_brace(width) {
     brace(width,28, mortice_width=5);
 }
 
-module side_pair(length) {
-    translate([-31,34]) configured_side(length);
-    translate([3,4+length/2*sqrt(3)+1 + 64]) rotate(a=180) configured_side(length);
+module side_pair(length, bearing_mount=false, docking_slots=true, servo_mounts=true) {
+    translate([-31,34]) configured_side(length, vertical_mortice_width=5, bearing_mount=bearing_mount, docking_slots=docking_slots, servo_mounts=servo_mounts);
+    translate([3,4+length/2*sqrt(3)+1 + 64]) rotate(a=180) configured_side(length, vertical_mortice_width=5, bearing_mount=bearing_mount, docking_slots=docking_slots, servo_mounts=servo_mounts);
 }
 
 //prop_mount();
