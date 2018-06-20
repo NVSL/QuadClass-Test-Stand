@@ -31,21 +31,15 @@ brace_width = 80;
 side_length = 130;
 side_height=side_length/2*sqrt(3);
 
+from new_stand import GripJoint
 
-
-def test_brace(length=120, width=40):
+def test_brace(length=110, width=40):
     base =  down(width)(square((length,width)))
-    for i, depth in enumerate(range(10, 30, 2)):
-        base -= right(10 + i*10)(forward(40)(grip(depth, squeeze=0.25)))
-
+    for i, depth in enumerate(range(10, 30, 4)):
+        base -= right(10 + i*10)(forward(40)(GripJoint(depth, squeeze=0.5)()))
+    for i, depth in enumerate(range(10, 30, 4)):
+        base -= right(10 + i*10 + 50)(forward(40)(GripJoint(depth, squeeze=0.25)()))
     return base
-
-def grip(depth=10, nominal_thickness=3, squeeze=0.15):
-    thin = nominal_thickness-squeeze
-    thick = nominal_thickness+squeeze
-    brace = polygon(points=[(-thick/2,0), (thick/2,0), (thin/2,-depth), (-thin/2,-depth)]) 
-    return brace
-
 
 
 print(scad_render(test_brace()))

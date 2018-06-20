@@ -55,7 +55,7 @@ class Side(object):
         self.pivot_diameter = inch_to_mm(1/8.0)            if bearing_mount else inch_to_mm(1/16.0)
         self.pivot_hole_diameter = inch_to_mm(1/4.0) - 0.1 if bearing_mount else inch_to_mm(1/16.0)
 
-        print self.pivot_hole_diameter
+
         self.height = self.width/2*sqrt(3)
 
 
@@ -68,8 +68,8 @@ class Side(object):
         self.big_brace_joint = GripJoint(depth=20, nominal_thickness=material_thickness, squeeze=0.5)
         self.big_brace_width = self.big_brace_joint.depth * 2
 
-        self.end_brace_joint = GripJoint(depth=self.pedestal_height/2, nominal_thickness=material_thickness, squeeze=0.5)
-        self.end_brace_width = self.pedestal_height
+        #self.end_brace_joint = GripJoint(depth=self.pedestal_height/2, nominal_thickness=material_thickness, squeeze=0.5)
+        #self.end_brace_width = self.pedestal_height
 
         self.layout_height = self.height
         self.layout_width = self.width
@@ -89,8 +89,8 @@ class Side(object):
             -translate([  200/2 + self.column_width/2 , 200/2 + self.pedestal_height])(square([200,200],  center=True))
             -translate([-(200/2 + self.column_width/2), 200/2 + self.pedestal_height])(square([200,200],  center=True))
 
-            -right(self.width/2-20)(back(0.6)(rotate(180)(self.end_brace_joint())))
-            -left(self.width/2-20)(back(0.6)(rotate(180)(self.end_brace_joint())))
+            #-right(self.width/2-20)(back(0.6)(rotate(180)(self.end_brace_joint())))
+            #-left(self.width/2-20)(back(0.6)(rotate(180)(self.end_brace_joint())))
             
             -(left(40)(forward(self.pedestal_height/2)(rotate(90)(brace_slot(self.big_brace_width, self.big_brace_joint)))))
             -(forward(self.height/2)(brace_slot(self.big_brace_width, self.big_brace_joint)))
@@ -169,14 +169,29 @@ class StackUp(object):
         return self
 
 side = Side(200, 0, 0, bearing_mount=True)
-big_brace = Brace(230, 100, side.big_brace_joint)
-small_brace = Brace(230, 0, side.end_brace_joint)
+big_brace = Brace(230, 60, side.big_brace_joint)
+#small_brace = Brace(230, 0, side.end_brace_joint)
 
-
-open("test.scad", "w").write(scad_render(StackUp().
+open("new_side.scad", "w").write(scad_render(StackUp().
                   add(side).
                   #add(side).
                   #add(big_brace).
+                  #add(big_brace).
+                  #add(small_brace).
+                  #add(small_brace).
+                  layout))
+open("new_small_brace.scad", "w").write(scad_render(StackUp().
+                  #add(side).
+                  #add(side).
+                  #add(big_brace).
+                  #add(big_brace).
+                  #add(small_brace).
+                  #add(small_brace).
+                  layout))
+open("new_big_brace.scad", "w").write(scad_render(StackUp().
+                  #add(side).
+                  #add(side).
+                  add(big_brace).
                   #add(big_brace).
                   #add(small_brace).
                   #add(small_brace).
