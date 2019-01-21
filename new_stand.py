@@ -1,7 +1,6 @@
 from solid import *
 from solid.utils import *
 
-
 def inch_to_mm(x):
     return x*25.4
 
@@ -82,6 +81,7 @@ class Side(object):
             -forward(self.height-17)(
                 translate([0, 20])(square([20,20], center=True))
                 +smooth_hole(self.pivot_hole_diameter)#circle(self.pivot_hole_diameter, center=True)
+                +forward(10)(smooth_hole(self.pivot_hole_diameter))#circle(self.pivot_hole_diameter, center=True)
                 #+circle(d=self.pivot_hole_diameter)#circle(self.pivot_hole_diameter, center=True)
             )
 
@@ -161,10 +161,12 @@ class StackUp(object):
         self.cursor = 0
         
     def add(self, o):
+        new = o()
         if not self.layout:
-            self.layout = o()
+            self.layout = new
         else:
-            self.layout += self.layout + (back(self.cursor + o.layout_height)(o()))
+            self.layout += self.layout + (back(self.cursor + o.layout_height)(new))
+        
         self.cursor += o.layout_height + self.spacing
         return self
 
@@ -172,7 +174,8 @@ side = Side(200, 0, 0, bearing_mount=True)
 big_brace = Brace(230, 60, side.big_brace_joint)
 #small_brace = Brace(230, 0, side.end_brace_joint)
 
-open("new_side.scad", "w").write(scad_render(StackUp().
+if True:
+    open("new_side.scad", "w").write(scad_render(StackUp().
                   add(side).
                   #add(side).
                   #add(big_brace).
@@ -180,7 +183,8 @@ open("new_side.scad", "w").write(scad_render(StackUp().
                   #add(small_brace).
                   #add(small_brace).
                   layout))
-open("new_small_brace.scad", "w").write(scad_render(StackUp().
+if False:
+    open("new_small_brace.scad", "w").write(scad_render(StackUp().
                   #add(side).
                   #add(side).
                   #add(big_brace).
@@ -188,7 +192,8 @@ open("new_small_brace.scad", "w").write(scad_render(StackUp().
                   #add(small_brace).
                   #add(small_brace).
                   layout))
-open("new_big_brace.scad", "w").write(scad_render(StackUp().
+if True:
+    open("new_big_brace.scad", "w").write(scad_render(StackUp().
                   #add(side).
                   #add(side).
                   add(big_brace).

@@ -1,5 +1,5 @@
 
-PARTS=test_stand_brace.scad test_stand_side.scad test_piece.scad two_sides.scad three_braces.scad full_kit.scad
+PARTS=new_big_brace.scad new_side.scad
 SVGS=$(PARTS:%.scad=%.svg)
 PDFS=$(PARTS:%.scad=%.pdf)
 DXFS=$(PARTS:%.scad=%.dxf)
@@ -7,6 +7,9 @@ DXFS=$(PARTS:%.scad=%.dxf)
 .PHONY: default
 default: $(SVGS) $(PDFS)
 dxf: $(DXFS)
+
+new_big_brace.scad new_side.scad: new_stand.py
+	python new_stand.py
 
 %.scad: %.py
 	python $< > $@
