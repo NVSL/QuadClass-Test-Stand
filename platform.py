@@ -98,14 +98,15 @@ class  platform_3(object):
     def __call__(self):
 	x = 20
 	l= 35
-	w = 7
+	w = 15
         d = 0
         arm_length = math.sqrt((self.full_width/2)**2 + (self.full_height/2)**2)
         
         outline = (square([self.width, self.height], center=True)
 
-                   + translate([-x, 0])(translate([w/2-7,0])(square([w,102],center=True)))
-	           + translate([+x, 0])(translate([-w/2+7,0])(square([w,102],center=True)))
+#                   + translate([-x, 0])(translate([w/2-7, 0])(square([w,102],center=True)))
+	           + (square([w,80],center=True)
+                      - square([w/3+1,80],center=True)) # the +1 is wiggle room
                    
 	           + rotate(a=45)(motor_grip(slot_depth=2, arm_length=arm_length, arm_width=7)())
                    + rotate(a=135)(motor_grip(slot_depth=2, arm_length=arm_length, arm_width=7)())

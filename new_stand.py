@@ -44,6 +44,7 @@ class Side(object):
                  width,
                  extension,
                  extension_height,
+                 platform_thickness,
                  bearing_mount=False,
                  docking_slots=True,
                  servo_mounts=True):
@@ -53,12 +54,12 @@ class Side(object):
         self.extension_height = extension_height
         self.pivot_diameter = inch_to_mm(1/8.0)            if bearing_mount else inch_to_mm(1/16.0)
         self.pivot_hole_diameter = inch_to_mm(1/4.0) - 0.1 if bearing_mount else inch_to_mm(1/16.0)
-
+        self.platform_thickness = platform_thickness
 
         self.height = self.width/2*sqrt(3)
 
 
-        self.column_width = 32
+        self.column_width = 25
         self.pedestal_height = 25
         self.notch_depth = 5
         self.notch_width = 1.5
@@ -81,7 +82,9 @@ class Side(object):
             -forward(self.height-17)(
                 translate([0, 20])(square([20,20], center=True))
                 +smooth_hole(self.pivot_hole_diameter)#circle(self.pivot_hole_diameter, center=True)
-                +forward(10)(smooth_hole(self.pivot_hole_diameter))#circle(self.pivot_hole_diameter, center=True)
+                #+forward(10)(smooth_hole(self.pivot_hole_diameter))
+                +forward(0.5 * self.platform_thickness + self.pivot_diameter/2)(square([30, self.platform_thickness], center=True)-
+                                                                                square([5, self.platform_thickness], center=True))
                 #+circle(d=self.pivot_hole_diameter)#circle(self.pivot_hole_diameter, center=True)
             )
 
@@ -89,10 +92,10 @@ class Side(object):
             -translate([  200/2 + self.column_width/2 , 200/2 + self.pedestal_height])(square([200,200],  center=True))
             -translate([-(200/2 + self.column_width/2), 200/2 + self.pedestal_height])(square([200,200],  center=True))
 
-            #-right(self.width/2-20)(back(0.6)(rotate(180)(self.end_brace_joint())))
+            #right(self.width/2-20)(back(0.6)(rotate(180)(self.end_brace_joint())))
             #-left(self.width/2-20)(back(0.6)(rotate(180)(self.end_brace_joint())))
             
-            -(left(40)(forward(self.pedestal_height/2)(rotate(90)(brace_slot(self.big_brace_width, self.big_brace_joint)))))
+            #-(left(40)(forward(self.pedestal_height/2)(rotate(90)(brace_slot(self.big_brace_width, self.big_brace_joint)))))
             -(forward(self.height/2)(brace_slot(self.big_brace_width, self.big_brace_joint)))
         )
 
@@ -170,7 +173,7 @@ class StackUp(object):
         self.cursor += o.layout_height + self.spacing
         return self
 
-side = Side(200, 0, 0, bearing_mount=True)
+side = Side(200, 0, 0, bearing_mount=False, platform_thickness=material_thickness)
 big_brace = Brace(230, 60, side.big_brace_joint)
 #small_brace = Brace(230, 0, side.end_brace_joint)
 
