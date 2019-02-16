@@ -52,8 +52,8 @@ class Side(object):
         self.width = width
         self.extension = extension
         self.extension_height = extension_height
-        self.pivot_diameter = inch_to_mm(1/8.0)            if bearing_mount else inch_to_mm(1/16.0)
-        self.pivot_hole_diameter = inch_to_mm(1/4.0) - 0.1 if bearing_mount else inch_to_mm(1/16.0)
+        self.pivot_diameter = inch_to_mm(1/8.0)            if bearing_mount else inch_to_mm(1/8.0)
+        self.pivot_hole_diameter = inch_to_mm(1/4.0) - 0.1 if bearing_mount else inch_to_mm(1/8.0)
         self.platform_thickness = platform_thickness
 
         self.height = self.width/2*sqrt(3)
@@ -174,7 +174,7 @@ class StackUp(object):
         return self
 
 side = Side(200, 0, 0, bearing_mount=False, platform_thickness=material_thickness)
-big_brace = Brace(230, 60, side.big_brace_joint)
+big_brace = Brace(150, 60, side.big_brace_joint)
 #small_brace = Brace(230, 0, side.end_brace_joint)
 
 if True:

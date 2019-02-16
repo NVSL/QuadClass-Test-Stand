@@ -30,6 +30,13 @@ class  motor_grip(object):
 	        square([self.mount_outer_diameter, self.mount_cut_width], center=True))
         ) - translate([-(self.arm_length-self.slot_depth/2), 0])(square([self.slot_depth+0.1, self.slot_width], center=True))
     
+
+def zip_tie_holes():
+    zip_tie_width = 2.6; #inch_to_mm(0.09);
+    zip_tie_thickness = 1.15; #inch_to_mm(0.04);
+    distance = 5.6;
+    return (translate([-distance/2,0])(square([zip_tie_thickness, zip_tie_width], center=True)) + 
+            translate([distance/2,0])(square([zip_tie_thickness, zip_tie_width], center=True)))
     
 class  platform_2(object):
     def __init__(self,
@@ -58,7 +65,9 @@ class  platform_2(object):
 	           + translate([-x,-d])(rotate(a=0)(motor_grip(slot_depth=2, arm_length=23, arm_width=7)()))
                    + translate([x, -d])(rotate(a=180)(motor_grip(slot_depth=2, arm_length=23, arm_width=7)()))
 	           + translate([-x, d])(rotate(a=0)(motor_grip(slot_depth=2, arm_length=23, arm_width=7)()))
-	           + translate([x,  d])(rotate(a=180)(motor_grip(slot_depth=2, arm_length=23, arm_width=7)())))
+	           + translate([x,  d])(rotate(a=180)(motor_grip(slot_depth=2, arm_length=23, arm_width=7)()))
+                   + zip_tie_holes()
+                   )
 
         w=16;
 
@@ -83,13 +92,13 @@ class FCB_mouting_holes(object):
 class  platform_3(object):
     def __init__(self,
                  board_width=58,
-                 board_height=61):
+                 board_height=65):
         self.edge_width = 10
         self.board_width = board_width
         self.board_height = board_height
         self.width= board_width
         self.height = board_height
-        self.edge_lip = 6
+        self.edge_lip = 10
         self.layout_width = self.height
         self.layout_height = max(self.width, self.width)
         self.full_width= 100
@@ -106,21 +115,23 @@ class  platform_3(object):
 
 #                   + translate([-x, 0])(translate([w/2-7, 0])(square([w,102],center=True)))
 	           + (square([w,80],center=True)
-                      - square([w/3+1,80],center=True)) # the +1 is wiggle room
+                      - square([w/3,80],center=True))
                    
 	           + rotate(a=45)(motor_grip(slot_depth=2, arm_length=arm_length, arm_width=7)())
                    + rotate(a=135)(motor_grip(slot_depth=2, arm_length=arm_length, arm_width=7)())
 	           + rotate(a=225)(motor_grip(slot_depth=2, arm_length=arm_length, arm_width=7)())
-	           + rotate(a=315)(motor_grip(slot_depth=2, arm_length=arm_length, arm_width=7)()))
+	           + rotate(a=315)(motor_grip(slot_depth=2, arm_length=arm_length, arm_width=7)())
 
-        cutout = (square([self.width-self.edge_lip*2, self.height-self.edge_lip*2], center=True))# +
-                  #                  FCB_mouting_holes()())
-                  #		  + translate([0, height/2-3])(zip_tie_holes())
-                  #		  + translate([0, -(height/2-3)])(zip_tie_holes()))
-                  #rotate(a=90)(adafruit_quarter_perm_proto())
+                   )
+
+        cutout = (square([self.width-self.edge_lip*2, self.height-self.edge_lip*2], center=True)
+                  + translate([0, (self.board_height/2 - self.edge_lip/2)])(zip_tie_holes())
+                  + translate([0, -(self.board_height/2 - self.edge_lip/2)])(zip_tie_holes())
+                  )
+
                   
                   
-        return outline -cutout - FCB_mouting_holes()()
+        return outline -cutout - FCB_mouting_holes()() 
                   
 open("platform.scad", "w").write(scad_render(StackUp().
                                                   add(platform_3()).

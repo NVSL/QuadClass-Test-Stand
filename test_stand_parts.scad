@@ -352,7 +352,7 @@ module side_pair(length, bearing_mount=false, docking_slots=true, servo_mounts=t
 //prop_mount_holes();
 //adafruit_quarter_perm_proto();
 
-//platform_2();
+platform_2();
 //side(side_length, side_height, 25, 4, horizontal_brace_width=brace_width, horizontal_mortice_width=20, vertical_brace_width=28, vertical_mortice_width=5);
 //side(side_length,  25, 4, horizontal_brace_width=brace_width, horizontal_mortice_width=20, vertical_brace_width=28, vertical_mortice_width=5);
 //side(200,  25, 4, horizontal_brace_width=brace_width, horizontal_mortice_width=20, vertical_brace_width=28, vertical_mortice_width=5, bearing_mount = true, docking_slots=false);
