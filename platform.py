@@ -98,7 +98,7 @@ class  platform_3(object):
         self.board_height = board_height
         self.width= board_width
         self.height = board_height
-        self.edge_lip = 10
+        self.edge_lip = 6
         self.layout_width = self.height
         self.layout_height = max(self.width, self.width)
         self.full_width= 100
