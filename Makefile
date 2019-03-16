@@ -1,4 +1,4 @@
-PARTS=new_big_brace.scad new_side.scad platform.scad
+PARTS=new_big_brace.scad new_side.scad platform.scad test-square.scad
 SVGS=$(PARTS:%.scad=%.svg)
 PDFS=$(PARTS:%.scad=%.pdf)
 DXFS=$(PARTS:%.scad=%.dxf)
