@@ -1,7 +1,7 @@
 from solid import *
 from solid.utils import *
-from new_stand import smooth_hole, StackUp
 import math
+from util import smooth_hole, StackUp, inch_to_mm, zip_tie_holes
 
 class  motor_grip(object):
     def __init__(self,
@@ -31,13 +31,6 @@ class  motor_grip(object):
         ) - translate([-(self.arm_length-self.slot_depth/2), 0])(square([self.slot_depth+0.1, self.slot_width], center=True))
     
 
-def zip_tie_holes():
-    zip_tie_width = 2.6; #inch_to_mm(0.09);
-    zip_tie_thickness = 1.15; #inch_to_mm(0.04);
-    distance = 5.6;
-    return (translate([-distance/2,0])(square([zip_tie_thickness, zip_tie_width], center=True)) + 
-            translate([distance/2,0])(square([zip_tie_thickness, zip_tie_width], center=True)))
-    
 class  platform_2(object):
     def __init__(self,
                  width=53,

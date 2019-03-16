@@ -1,8 +1,7 @@
 from solid import *
 from solid.utils import *
+from util import smooth_hole, StackUp, inch_to_mm, zip_tie_holes
 
-def inch_to_mm(x):
-    return x*25.4
 
 #screw_hole_diameter=2.5;
 screw_shaft_length=16;
@@ -34,9 +33,8 @@ side_height=side_length/2*sqrt(3);
 def mortice_hole_distance(brace_width, mortice_width):
     return (brace_width-mortice_width)/2-1.5*bolt_diameter
 
-def smooth_hole(diameter):
-    return scale([0.1,0.1])(circle(d=diameter*10))
 
+from platform import zip_tie_holes
 
 
 class Side(object):
@@ -95,7 +93,7 @@ class Side(object):
             #right(self.width/2-20)(back(0.6)(rotate(180)(self.end_brace_joint())))
             #-left(self.width/2-20)(back(0.6)(rotate(180)(self.end_brace_joint())))
             
-            #-(left(40)(forward(self.pedestal_height/2)(rotate(90)(brace_slot(self.big_brace_width, self.big_brace_joint)))))
+            -(left(40)(forward(self.pedestal_height/2)(rotate(90)(brace_slot(self.big_brace_width, self.big_brace_joint)))))
             -(forward(self.height/2)(brace_slot(self.big_brace_width, self.big_brace_joint)))
         )
 
@@ -153,25 +151,10 @@ class Brace(object):
                     forward(self.joint_width)(
                         scale(( 1,1))(
                             self.joint(sided=True))))))
+                - forward(self.width/2)(zip_tie_holes(18))  #18 is the width of an FTDI header + a little bit
         )
 
 #print(scad_render(test_brace()))
-
-class StackUp(object):
-    def __init__(self, spacing=1):
-        self.spacing = 1
-        self.layout = None
-        self.cursor = 0
-        
-    def add(self, o):
-        new = o()
-        if not self.layout:
-            self.layout = new
-        else:
-            self.layout += self.layout + (back(self.cursor + o.layout_height)(new))
-        
-        self.cursor += o.layout_height + self.spacing
-        return self
 
 side = Side(200, 0, 0, bearing_mount=False, platform_thickness=material_thickness)
 big_brace = Brace(150, 60, side.big_brace_joint)
