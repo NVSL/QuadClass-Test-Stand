@@ -91,7 +91,7 @@ class  platform_3(object):
         self.board_height = board_height
         self.width= board_width
         self.height = board_height
-        self.edge_lip = 6
+        self.edge_lip = 10
         self.layout_width = self.height
         self.layout_height = max(self.width, self.width)
         self.full_width= 100
@@ -110,10 +110,10 @@ class  platform_3(object):
 	           + (square([w,80],center=True)
                       - square([w/3,80],center=True))
                    
-	           + rotate(a=45)(motor_grip(slot_depth=2, arm_length=arm_length, arm_width=7)())
-                   + rotate(a=135)(motor_grip(slot_depth=2, arm_length=arm_length, arm_width=7)())
-	           + rotate(a=225)(motor_grip(slot_depth=2, arm_length=arm_length, arm_width=7)())
-	           + rotate(a=315)(motor_grip(slot_depth=2, arm_length=arm_length, arm_width=7)())
+	           + rotate(a=45)(motor_grip(slot_depth=2, arm_length=arm_length, arm_width=10)())
+                   + rotate(a=135)(motor_grip(slot_depth=2, arm_length=arm_length, arm_width=10)())
+	           + rotate(a=225)(motor_grip(slot_depth=2, arm_length=arm_length, arm_width=10)())
+	           + rotate(a=315)(motor_grip(slot_depth=2, arm_length=arm_length, arm_width=10)())
 
                    )
 
