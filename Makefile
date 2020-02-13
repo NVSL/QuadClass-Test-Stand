@@ -1,4 +1,4 @@
-PARTS=new_big_brace.scad new_side.scad platform.scad test-square.scad
+PARTS=new_big_brace.scad new_side.scad platform.scad test-square.scad board_mount.scad
 SVGS=$(PARTS:%.scad=%.svg)
 PDFS=$(PARTS:%.scad=%.pdf)
 DXFS=$(PARTS:%.scad=%.dxf)
@@ -13,6 +13,8 @@ setup:
 	(. venv/bin/activate; pip install solidpython)
 
 new_big_brace.scad new_side.scad: new_stand.py
+	python new_stand.py
+platform.scad board_mount.scad: new_stand.py
 	python new_stand.py
 
 %.scad: %.py
@@ -30,4 +32,4 @@ new_big_brace.scad new_side.scad: new_stand.py
 
 
 clean:
-	rm -rf $(SVGS) $(PDFS)
+	rm -rf $(SVGS) $(PDFS) $(PARTS)

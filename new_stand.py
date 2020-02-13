@@ -59,8 +59,6 @@ class Side(object):
 
         self.column_width = 25
         self.pedestal_height = 25
-        self.notch_depth = 5
-        self.notch_width = 1.5
         self.squeeze = 0.25
 
         self.big_brace_joint = GripJoint(depth=20, nominal_thickness=material_thickness, squeeze=0.5)
@@ -74,15 +72,19 @@ class Side(object):
 
     def __call__(self):
 
+        remote_recess = 76
+        
         return (
             polygon([[-self.width/2,0],[self.width/2,0],[0,self.height]])
-            +translate([0, self.extension_height/2])(square(size=[self.width+2*self.extension, self.extension_height], center=True)  )
-            -forward(self.height-17)(
-                translate([0, 20])(square([20,20], center=True))
+            + translate([0, self.extension_height/2])(square(size=[self.width+2*self.extension, self.extension_height], center=True)  )
+            - forward(self.height-17)(
+                forward(10+3*self.platform_thickness)(square([20,20], center=True))
                 +smooth_hole(self.pivot_hole_diameter)#circle(self.pivot_hole_diameter, center=True)
-                #+forward(10)(smooth_hole(self.pivot_hole_diameter))
+                +forward(30/2)(square([self.pivot_hole_diameter, 30], center=True))
+                -translate([self.pivot_hole_diameter*7/8, self.pivot_hole_diameter/1.8])(smooth_hole(self.pivot_hole_diameter))
+                -translate([-self.pivot_hole_diameter*7/8, self.pivot_hole_diameter/1.8])(smooth_hole(self.pivot_hole_diameter))
                 +forward(0.5 * self.platform_thickness + self.pivot_diameter/2)(square([30, self.platform_thickness], center=True)-
-                                                                                square([5, self.platform_thickness], center=True))
+                                                                                square([10, self.platform_thickness], center=True))
                 #+circle(d=self.pivot_hole_diameter)#circle(self.pivot_hole_diameter, center=True)
             )
 
@@ -90,6 +92,9 @@ class Side(object):
             -translate([  200/2 + self.column_width/2 , 200/2 + self.pedestal_height])(square([200,200],  center=True))
             -translate([-(200/2 + self.column_width/2), 200/2 + self.pedestal_height])(square([200,200],  center=True))
 
+            -translate([-(remote_recess/2 + self.column_width/2), remote_recess/2 + self.pedestal_height - 3 ])(square([remote_recess,remote_recess],  center=True))
+
+            
             #right(self.width/2-20)(back(0.6)(rotate(180)(self.end_brace_joint())))
             #-left(self.width/2-20)(back(0.6)(rotate(180)(self.end_brace_joint())))
             
@@ -156,7 +161,7 @@ class Brace(object):
 
 #print(scad_render(test_brace()))
 
-side = Side(200, 0, 0, bearing_mount=False, platform_thickness=material_thickness)
+side = Side(200, 0,0, bearing_mount=False, platform_thickness=material_thickness)
 big_brace = Brace(150, 60, side.big_brace_joint)
 #small_brace = Brace(230, 0, side.end_brace_joint)
 
