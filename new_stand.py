@@ -81,9 +81,11 @@ class Side(object):
                 forward(10+3*self.platform_thickness)(square([20,20], center=True))
                 +smooth_hole(self.pivot_hole_diameter)#circle(self.pivot_hole_diameter, center=True)
                 +forward(30/2)(square([self.pivot_hole_diameter, 30], center=True))
-                -translate([self.pivot_hole_diameter*7/8, self.pivot_hole_diameter/1.8])(smooth_hole(self.pivot_hole_diameter))
+                -translate([ self.pivot_hole_diameter*7/8, self.pivot_hole_diameter/1.8])(smooth_hole(self.pivot_hole_diameter))
                 -translate([-self.pivot_hole_diameter*7/8, self.pivot_hole_diameter/1.8])(smooth_hole(self.pivot_hole_diameter))
                 +forward(0.5 * self.platform_thickness + self.pivot_diameter/2)(square([30, self.platform_thickness], center=True)-
+                                                                                square([10, self.platform_thickness], center=True))
+                +forward((0.5-2) * self.platform_thickness + self.pivot_diameter/2)(square([30, self.platform_thickness], center=True)-
                                                                                 square([10, self.platform_thickness], center=True))
                 #+circle(d=self.pivot_hole_diameter)#circle(self.pivot_hole_diameter, center=True)
             )

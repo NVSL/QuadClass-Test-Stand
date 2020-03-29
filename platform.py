@@ -147,7 +147,7 @@ class  platform_3(object):
 
                   
                   
-        return outline - cutout - FCB_mouting_holes()() - translate([9, 15])(square([12,4], center=True)) - translate([-9, -15])(square([12,4], center=True))
+        return outline - cutout - FCB_mouting_holes()() - rotate(90)(FCB_mouting_holes()()) - translate([9, 15])(square([12,4], center=True)) - translate([-9, -15])(square([12,4], center=True))
 
                   
 open("platform.scad", "w").write(scad_render(StackUp().
