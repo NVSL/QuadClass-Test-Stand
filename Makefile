@@ -27,8 +27,9 @@ platform.scad board_mount.scad: new_stand.py
 %.dxf: %.scad
 	/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD $< -o $@
 
+INKSCAPE=/Applications/Inkscape.app/Contents/MacOS/inkscape
 %.pdf: %.svg
-	inkscape --export-pdf="$$PWD/$@" "$$PWD/$<"
+	$(INKSCAPE) --export-filename="$$PWD/$@" "$$PWD/$<"
 
 
 clean:
